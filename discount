@@ -1,0 +1,65 @@
+# Define the tax rate and discount rate
+TAX_RATE = 0.07  # 7% tax
+DISCOUNT_RATE = 0.10  # 10% discount
+
+# Function to calculate tax, discount, and final total
+def calculate_total(item_price, quantity, discount_rate, tax_rate):
+    subtotal = item_price * quantity
+    discount = subtotal * discount_rate
+    total_before_tax = subtotal - discount
+    tax = total_before_tax * tax_rate
+    total_amount = total_before_tax + tax
+    return subtotal, discount, total_before_tax, tax, total_amount
+
+# Function to print the receipt
+def print_receipt(items):
+    total_amount = 0
+    print("\n---------- RECEIPT ----------")
+    for item in items:
+        item_name = item['name']
+        item_price = item['price']
+        quantity = item['quantity']
+        
+        # Calculate subtotal, discount, tax, and total amount for each item
+        subtotal, discount, total_before_tax, tax, total_amount_per_item = calculate_total(item_price, quantity, DISCOUNT_RATE, TAX_RATE)
+        
+        # Update the grand total amount
+        total_amount += total_amount_per_item
+        
+        # Print item details
+        print(f"Item: {item_name}")
+        print(f"  Price: ${item_price:.2f}")
+        print(f"  Quantity: {quantity}")
+        print(f"  Subtotal: ${subtotal:.2f}")
+        print(f"  Discount: -${discount:.2f}")
+        print(f"  Total before tax: ${total_before_tax:.2f}")
+        print(f"  Tax: ${tax:.2f}")
+        print(f"  Total for this item: ${total_amount_per_item:.2f}")
+        print("-------------------------------")
+    
+    print(f"\nTotal amount: ${total_amount:.2f}")
+    print("Thank you for shopping with us!")
+
+# Main function to interact with the user
+def main():
+    items = []
+    
+    while True:
+        item_name = input("Enter item name (or 'done' to finish): ")
+        if item_name.lower() == 'done':
+            break
+        item_price = float(input(f"Enter price for {item_name}: $"))
+        item_quantity = int(input(f"Enter quantity for {item_name}: "))
+        
+        # Add item to the list
+        items.append({
+            'name': item_name,
+            'price': item_price,
+            'quantity': item_quantity
+        })
+    
+    # Print the receipt after all items have been entered
+    print_receipt(items)
+
+if __name__ == "__main__":
+    main()
